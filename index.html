@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>🎉 Dia do Aniversário — Mágica 🎩</title>
+  <title>🎉 Mágica do Dia do Aniversário — Potências de 2 🎩</title>
   <style>
     :root{ --cardW:160px; --cardH:240px; }
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#041024,#071226);color:#fff;display:flex;flex-direction:column;align-items:center;padding:16px;min-height:100vh;}
@@ -42,15 +42,15 @@
 
   <div class="estrelas"></div>
   <h1>🎉 Mágica do Dia do Aniversário</h1>
-  <p>Pense em um número entre 1 e 130 e vamos adivinhar qual é, revelando mágicamente!</p>
-
+  <p>Pense em um número de 1 a 31 e vamos adivinhar qual é, revelando mágicamente!</p>
   <div id="board" class="board"></div>
 
   <div class="controls">
-    <div class="question">👉 Você está pronto para começar?</div>
+    <div class="question">👉 Seu número está nesta tabela?</div>
     <div class="radio-group">
-      <label class="radio-option col1"><input type="radio" name="start" value="1"> Sim, vamos!</label>
-      <label class="radio-option col2"><input type="radio" name="start" value="0"> Não, estou pensando...</label>
+      <label class="radio-option col1"><input type="radio" name="col" value="1"> Tabela 1</label>
+      <label class="radio-option col2"><input type="radio" name="col" value="2"> Tabela 2</label>
+      <label class="radio-option col3"><input type="radio" name="col" value="4"> Tabela 3</label>
     </div>
     <button class="ghost" id="revelar" style="display:none;">🎩 Revelar Número</button>
     <button class="ghost" id="reiniciar">🔄 Participar novamente</button>
@@ -82,7 +82,7 @@
       confetti({particleCount:300,spread:160,origin:{y:0.5}});
     }
 
-    document.querySelectorAll('input[name="start"]').forEach(r=>{r.addEventListener('change', e=>{startGame();})});
+    document.querySelectorAll('input[name="col"]').forEach(r=>{r.addEventListener('change', e=>{startGame();})});
     document.getElementById('reiniciar').onclick=()=>startGame();
     document.getElementById('revelar').onclick=()=>finalize();
 
