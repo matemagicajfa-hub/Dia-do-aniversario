@@ -1,0 +1,92 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>🎉 Dia do Aniversário — Mágica 🎩</title>
+  <style>
+    :root{ --cardW:160px; --cardH:240px; }
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#041024,#071226);color:#fff;display:flex;flex-direction:column;align-items:center;padding:16px;min-height:100vh;}
+    h1{color:#ffd54f;font-size:28px;margin:10px 0;}
+    p{color:#cfe8ff;max-width:900px;text-align:center;}
+    .board{display:flex;gap:24px;justify-content:center;margin-top:20px;}
+    .column{display:flex;flex-direction:column;gap:12px;}
+    .scene{width:var(--cardW);height:var(--cardH);perspective:1000px;}
+    .card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .6s;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.6);cursor:pointer;}
+    .card.revealed{transform:rotateY(180deg);}
+    .face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;display:flex;flex-direction:column;justify-content:space-between;padding:10px;}
+    .front{background:#fff;color:#000;transform:rotateY(180deg);}
+    .back{background:linear-gradient(135deg,#003366,#0055aa);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:bold;}
+    .value-top,.value-bottom{font-size:18px;}
+    .value-bottom{transform:rotate(180deg);}
+    .suit-center{font-size:46px;text-align:center;line-height:1;}
+    .red{color:#c62828;} .black{color:#111;}
+    .controls{margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:14px;}
+    .question{font-size:20px;margin-bottom:8px;}
+    .radio-group{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;}
+    .radio-option{font-size:18px;display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;}
+    .col1{color:#e53935;} .col2{color:#43a047;} .col3{color:#1e88e5;}
+    input[type="radio"]{transform:scale(1.4);}
+    .ghost{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;}
+    .resultado{margin-top:18px;font-size:20px;color:#ffd54f;text-align:center;min-height:76px;}
+    .avatars{margin-top:14px;} .avatar{width:96px;margin:8px;}
+    .estrelas{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+  </style>
+</head>
+<body>
+  <!-- VLibras Plugin Integration -->
+  <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
+
+  <div class="estrelas"></div>
+  <h1>🎉 Mágica do Dia do Aniversário</h1>
+  <p>Pense em um número entre 1 e 130 e vamos adivinhar qual é, revelando mágicamente!</p>
+
+  <div id="board" class="board"></div>
+
+  <div class="controls">
+    <div class="question">👉 Você está pronto para começar?</div>
+    <div class="radio-group">
+      <label class="radio-option col1"><input type="radio" name="start" value="1"> Sim, vamos!</label>
+      <label class="radio-option col2"><input type="radio" name="start" value="0"> Não, estou pensando...</label>
+    </div>
+    <button class="ghost" id="revelar" style="display:none;">🎩 Revelar Número</button>
+    <button class="ghost" id="reiniciar">🔄 Participar novamente</button>
+    <button class="ghost" id="toggleVoice">🔊 Voz: Ligada</button>
+  </div>
+
+  <div class="resultado" id="resultado">A mágica começa aqui...</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <script>
+    let rodada=1,voiceEnabled=true;
+
+    document.getElementById('toggleVoice').onclick=()=>{voiceEnabled=!voiceEnabled;document.getElementById('toggleVoice').textContent=voiceEnabled?'🔊 Voz: Ligada':'🔇 Voz: Desligada';};
+
+    function speak(t){if(!voiceEnabled)return;try{let u=new SpeechSynthesisUtterance(t);u.lang='pt-BR';speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+
+    function startGame(){
+      rodada=1;
+      const rodadaElement = document.getElementById('rodada');
+      if (rodadaElement) {rodadaElement.textContent = rodada;}
+      document.getElementById('revelar').style.display='inline-block';
+      speak('Você pensou em um número? Em qual intervalo ele está?');
+    }
+
+    function finalize(){
+      document.getElementById('resultado').innerHTML='🎩 <strong>A mágica revelou o número!</strong><br>🙌 Agradecemos a sua participação.<br>👨‍🏫 Professores: Rafael Oliveira e Ronaldo Soares';
+      speak('A mágica foi feita, o número foi revelado!');
+      confetti({particleCount:300,spread:160,origin:{y:0.5}});
+    }
+
+    document.querySelectorAll('input[name="start"]').forEach(r=>{r.addEventListener('change', e=>{startGame();})});
+    document.getElementById('reiniciar').onclick=()=>startGame();
+    document.getElementById('revelar').onclick=()=>finalize();
+
+    window.onload=()=>startGame();
+  </script>
+</body>
+</html>
